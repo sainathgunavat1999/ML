@@ -1,47 +1,67 @@
 from pandas import DataFrame
+import pandas as pd
 
 import matplotlib.pyplot as plt
 from sklearn import linear_model
 
+data=pd.read_csv('housing.csv')
 
-Stock_Market = {'Year': [2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2017,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016,2016],
-                'Month': [12, 11,10,9,8,7,6,5,4,3,2,1,12,11,10,9,8,7,6,5,4,3,2,1],
-                'Interest_Rate': [2.75,2.5,2.5,2.5,2.5,2.5,2.5,2.25,2.25,2.25,2,2,2,1.75,1.75,1.75,1.75,1.75,1.75,1.75,1.75,1.75,1.75,1.75],
-                'Unemployment_Rate': [5.3,5.3,5.3,5.3,5.4,5.6,5.5,5.5,5.5,5.6,5.7,5.9,6,5.9,5.8,6.1,6.2,6.1,6.1,6.1,5.9,6.2,6.2,6.1],
-                'Stock_Index_Price': [1464,1394,1357,1293,1256,1254,1234,1195,1159,1167,1130,1075,1047,965,943,958,971,949,884,866,876,822,704,719]        
-                }
+column=['Id','MSSubClass','LotFrontage','LotArea','OverallQual','OverallCond','YearBuilt','YearRemodAdd','MasVnrArea','BsmtFinSF1','BsmtFinSF2','BsmtUnfSF'
+,'TotalBsmtSF','1stFlrSF','2ndFlrSF','LowQualFinSF','GrLivArea','BsmtFullBath','BsmtHalfBath','FullBath','HalfBath','BedroomAbvGr','KitchenAbvGr','TotRmsAbvGrd',
+'Fireplaces','GarageYrBlt','GarageCars','GarageArea','WoodDeckSF','OpenPorchSF','EnclosedPorch','3SsnPorch','ScreenPorch','PoolArea','MiscVal','MoSold',
+'YrSold','SalePrice']
 
-df = DataFrame(Stock_Market,columns=['Year','Month','Interest_Rate','Unemployment_Rate','Stock_Index_Price'])
+df = DataFrame(data,columns=column).fillna(value=0)
 
-print (df)
+X = df[['MSSubClass','LotFrontage','LotArea','OverallQual','OverallCond','YearBuilt','YearRemodAdd','MasVnrArea','BsmtFinSF1','BsmtFinSF2','BsmtUnfSF'
+,'TotalBsmtSF','1stFlrSF','2ndFlrSF','LowQualFinSF','GrLivArea','BsmtFullBath','BsmtHalfBath','FullBath','HalfBath','BedroomAbvGr','KitchenAbvGr','TotRmsAbvGrd',
+'Fireplaces','GarageYrBlt','GarageCars','GarageArea','WoodDeckSF','OpenPorchSF','EnclosedPorch','3SsnPorch','ScreenPorch','PoolArea','MiscVal','MoSold',
+'YrSold']] 
+Y = df['SalePrice']
 
-df = DataFrame(Stock_Market,columns=['Year','Month','Interest_Rate','Unemployment_Rate','Stock_Index_Price'])
- 
-plt.scatter(df['Interest_Rate'], df['Stock_Index_Price'], color='red')
-plt.title('Stock Index Price Vs Interest Rate', fontsize=14)
-plt.xlabel('Interest Rate', fontsize=14)
-plt.ylabel('Stock Index Price', fontsize=14)
-plt.grid(True)
-plt.show()
-
-plt.scatter(df['Unemployment_Rate'], df['Stock_Index_Price'], color='green')
-plt.title('Stock Index Price Vs Unemployment Rate', fontsize=14)
-plt.xlabel('Unemployment Rate', fontsize=14)
-plt.ylabel('Stock Index Price', fontsize=14)
-plt.grid(True)
-plt.show()
-
-X = df[['Interest_Rate','Unemployment_Rate']] # here we have 2 variables for multiple regression. If you just want to use one variable for simple linear regression, then use X = df['Interest_Rate'] for example.Alternatively, you may add additional variables within the brackets
-Y = df['Stock_Index_Price']
- 
-# with sklearn
 regr = linear_model.LinearRegression()
 regr.fit(X, Y)
 
 print('Intercept: \n', regr.intercept_)
 print('Coefficients: \n', regr.coef_)
 
-# prediction with sklearn
-New_Interest_Rate = 2.75
-New_Unemployment_Rate = 5.3
-print ('Predicted Stock Index Price: \n', regr.predict([[New_Interest_Rate ,New_Unemployment_Rate]]))
+newMSSubClass=20
+newLotFrontage=65
+newLotArea=10000
+newOverallQual=5
+newOverallCond=8
+newYearBuilt=2000
+newYearRemodAdd=2005
+newMasVnrArea=150
+newBsmtFinSF1=600
+newBsmtFinSF2=0
+newBsmtUnfSF=150
+newTotalBsmtSF=1200
+new1stFlrSF=580
+new2ndFlrSF=146
+newLowQualFinSF=0
+newGrLivArea=1200
+newBsmtFullBath=1
+newBsmtHalfBath=0
+newFullBath=2
+newHalfBath=1
+BedroomAbvGr=3
+KitchenAbvGr=1
+TotRmsAbvGrd=8
+Fireplaces=1
+GarageYrBlt=2000
+GarageCars=1
+GarageArea=540
+WoodDeckSF=500
+OpenPorchSF=50
+EnclosedPorch=200
+3SsnPorch=0
+ScreenPorch=0
+PoolArea=0
+MiscVal=0
+MoSold=12
+YrSold=2008
+print ('Predicted Stock Index Price: \n', regr.predict([['MSSubClass','LotFrontage','LotArea','OverallQual','OverallCond','YearBuilt','YearRemodAdd','MasVnrArea','BsmtFinSF1','BsmtFinSF2','BsmtUnfSF'
+,'TotalBsmtSF','1stFlrSF','2ndFlrSF','LowQualFinSF','GrLivArea','BsmtFullBath','BsmtHalfBath','FullBath','HalfBath','BedroomAbvGr','KitchenAbvGr','TotRmsAbvGrd',
+'Fireplaces','GarageYrBlt','GarageCars','GarageArea','WoodDeckSF','OpenPorchSF','EnclosedPorch','3SsnPorch','ScreenPorch','PoolArea','MiscVal','MoSold',
+'YrSold']]))
